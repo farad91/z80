@@ -96,24 +96,33 @@ if __name__ == '__main__':
     ''' Main Program '''
     qt_app = QApplication(sys.argv)
     
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', dest='instructions', action='store_const', default=False, const=True, help='show processor instructions')
+    parser.add_argument('-t', dest='timestamps',   action='store_const', default=False, const=True, help='show timestamps of instructions (requires instructions to be shown)')
+    # parser.add_argument('-m', dest='memory',       action='store_const', default=False, const=True, help='show memory io')
+    # parser.add_argument('-n', dest='interrupts',   action='store_const', default=False, const=True, help='show interrupts')
+    cmdline_args = parser.parse_args()
+
     mach = Z80SBC()
+
     def worker():
         t = time()
              
         while True:
-            # t = time()
             ins,  args =  mach.step_instruction()
-            print(ins.assembler(args))
-            sleep(0.00000001)
+            if cmdline_args.instructions:
+                ts = time() - t
+                print((("[%f]\t" % ts) if cmdline_args.timestamps else '') + ins.assembler(args))
+            sleep(0.00000025)
             # print (time() - t) / ins.tstates
             
             # mach._mem_view.update()
             # mach._reg_gui.update()
             
-    
-
     thread = threading.Thread(target=worker)
     thread.setDaemon(True)
     thread.start()
  
     qt_app.exec_()
+
