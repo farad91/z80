@@ -1,14 +1,16 @@
 import sys
  
-from PySide.QtCore import *
-from PySide.QtGui import *
-from PySide.QtWebKit import * 
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
+from PyQt5.QtWebKit import * 
+from PyQt5.QtWebKitWidgets import *
 
 from cStringIO import StringIO
 
 class RegistersGUI(QWidget):
     _addresses = [0x80, 0x81]
-    _update_sgl = Signal()
+    _update_sgl = pyqtSignal()
     format_data = """
 <html>
 	<head>
@@ -153,7 +155,7 @@ class RegistersGUI(QWidget):
 
         self.update()
     
-    @Slot()
+    @pyqtSlot()
     def update(self):
         #print "WRITE ", address
         self._update_sgl.emit()
@@ -169,7 +171,7 @@ class RegistersGUI(QWidget):
     
 
 class MemoryView(QWidget):
-    _update_sgl = Signal(int)
+    _update_sgl = pyqtSignal(int)
     def __init__(self, memory, registers):
         super(MemoryView, self).__init__()
         self._modifiers = {}
@@ -232,7 +234,7 @@ class MemoryView(QWidget):
         self.update(val)
 
     
-    @Slot()
+    @pyqtSlot()
     def update(self,highlight=-1):
         self._update_sgl.emit(highlight)
         

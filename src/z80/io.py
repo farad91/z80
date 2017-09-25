@@ -1,7 +1,8 @@
 import sys
  
-from PySide.QtCore import *
-from PySide.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
 
 class IO(object):
     _addresses = []
@@ -17,7 +18,7 @@ class Interruptable(object):
     
 class Console(QTextEdit, IO):
     _addresses = [0x80, 0x81]
-    _wrt_sgnl = Signal(int, int)
+    _wrt_sgnl = pyqtSignal(int, int)
     def __init__(self, interruptable):
         #assert isinstance(interruptable, Interruptable )
         super(Console, self).__init__()
@@ -49,7 +50,7 @@ class Console(QTextEdit, IO):
         return 0x13
     
     
-    @Slot(int, int)
+    @pyqtSlot(int, int)
     def write(self, address, value):
         print "------> WRITE ", address
         self._wrt_sgnl.emit(address, value)
