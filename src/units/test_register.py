@@ -27,6 +27,6 @@ class TestZ80Registers(unittest.TestCase):
         
 if __name__ == '__main__':
     unittest.main()
-    raw_input()
+    input()
     
     

@@ -13,7 +13,7 @@ class IO(object):
     
 class Interruptable(object):
     def interrupt(self):
-        print "interrupt"
+        print("interrupt")
         pass
     
 class Console(QTextEdit, IO):
@@ -36,7 +36,7 @@ class Console(QTextEdit, IO):
         self._send_queue = None
         
     def read(self, address):
-        print "READ ", address
+        print("READ ", address)
         if address == 0x80:
             v =  ((1 << 1) | # RTS
                   ((self._send_queue is not None) << 0) | # interrupt?
@@ -52,7 +52,7 @@ class Console(QTextEdit, IO):
     
     @pyqtSlot(int, int)
     def write(self, address, value):
-        print "------> WRITE ", address
+        print("------> WRITE ", address)
         self._wrt_sgnl.emit(address, value)
         
     def _write(self, address, value):

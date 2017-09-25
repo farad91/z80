@@ -6,7 +6,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWebKit import * 
 from PyQt5.QtWebKitWidgets import *
 
-from cStringIO import StringIO
+from io import StringIO
 
 class RegistersGUI(QWidget):
     _addresses = [0x80, 0x81]

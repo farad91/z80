@@ -42,7 +42,7 @@ class TestZ80Instructions(unittest.TestCase):
     def test_ld(self):
         by = [0x3E, 0x45]
         for ins in self.pass_bytes(by):
-            print ins
+            print(ins)
             self.execute(ins)
         self.assertEqual(self.registers.A, 0x45)
 
@@ -57,7 +57,7 @@ class TestZ80Instructions(unittest.TestCase):
         for ins, a in zip(self.pass_bytes(byts), asm.split("\n")):
             res = ins[0].assembler(ins[1])
             self.assertEqual(res, a.strip().upper())
-            print res
+            print(res)
         res = res[:-1]
         
     def test_assembler_8bit_load(self):
@@ -146,7 +146,7 @@ class TestZ80Instructions(unittest.TestCase):
                 self.registers.PC = util.inc8(self.registers.PC)
 
             self.execute((ins, args))
-        print self.registers.A
+        print(self.registers.A)
         
         self.assertEqual(self.registers.B, 0x54+0x54-0x37)
         self.assertEqual(self.registers.HL, 0x6543+0x1234-0x55)
@@ -170,7 +170,7 @@ class TestAdditionSubtraction(unittest.TestCase):
     def test_addition_overflow2_flag(self):
         res = util.add8(util.make_8bit_twos_comp(-10), util.make_8bit_twos_comp(10),
                   self.registers)
-        print util.get_8bit_twos_comp(res)
+        print(util.get_8bit_twos_comp(res))
         self.assertEqual(util.get_8bit_twos_comp(res), 0)
         self.assertFalse(self.registers.condition.PV)
         self.assertFalse(self.registers.condition.S)
@@ -179,7 +179,7 @@ class TestAdditionSubtraction(unittest.TestCase):
         res = util.add8(util.make_8bit_twos_comp(-10), util.make_8bit_twos_comp(-10),
                   self.registers)
         self.assertEqual(util.get_8bit_twos_comp(res), util.get_8bit_twos_comp(-20))
-        print util.get_8bit_twos_comp(res)
+        print(util.get_8bit_twos_comp(res))
         self.assertFalse(self.registers.condition.PV)
         self.assertTrue(self.registers.condition.S)
         
@@ -230,4 +230,4 @@ class TestAdditionSubtraction(unittest.TestCase):
         
 if __name__ == '__main__':
     unittest.main()
-    raw_input()
+    input()

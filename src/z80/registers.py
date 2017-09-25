@@ -1,7 +1,7 @@
 class BitAccesser(object):
     def __init__(self, bit_names, registers, reg):
         object.__setattr__(self, "bits",
-                           dict(zip(bit_names, range(7, -1, -1))))
+                           dict(list(zip(bit_names, list(range(7, -1, -1))))))
         self.registers = registers
         #self.registers = registers
         self.reg = reg
@@ -68,7 +68,7 @@ class Registers(dict):
             self[attr] = val
 
     def __getattr__(self, reg):
-        if self.has_key(reg):
+        if reg in self:
             return self[reg]
         elif reg in ["HL", "AF", "BC", "DE"]:
             return self[reg[0]] << 8 |  self[reg[1]]
