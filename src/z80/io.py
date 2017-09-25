@@ -19,7 +19,7 @@ class Interruptable(object):
 class Console(QTextEdit, IO):
     _addresses = [0x80, 0x81]
     _wrt_sgnl = pyqtSignal(int, int)
-    def __init__(self, interruptable):
+    def __init__(self, interruptable, io_log):
         #assert isinstance(interruptable, Interruptable )
         super(Console, self).__init__()
         self.setPlainText("")
@@ -32,11 +32,13 @@ class Console(QTextEdit, IO):
         self.setReadOnly(True)
         self.setGeometry(300, 0, 640, 480)
 
-        
+        self._io_log = io_log
         self._send_queue = None
         
     def read(self, address):
-        print("READ ", address)
+
+        if self._io_log:
+            print("READ ", address)
         if address == 0x80:
             v =  ((1 << 1) | # RTS
                   ((self._send_queue is not None) << 0) | # interrupt?
@@ -52,7 +54,8 @@ class Console(QTextEdit, IO):
     
     @pyqtSlot(int, int)
     def write(self, address, value):
-        print("------> WRITE ", address)
+        if self._io_log:
+            print("------> WRITE ", address)
         self._wrt_sgnl.emit(address, value)
         
     def _write(self, address, value):

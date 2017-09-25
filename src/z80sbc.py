@@ -13,13 +13,13 @@ import threading
 #logging.basicConfig(level=logging.INFO)
 
 class Z80SBC(io.Interruptable):
-    def __init__(self):
+    def __init__(self, io_log):
         self.registers = registers.Registers()
         self.instructions = instructions.InstructionSet(self.registers)
         self._memory = bytearray(64*1024)
         self._read_rom("../roms/ROM.HEX")
         self._iomap = io.IOMap()
-        self._console = io.Console(self)
+        self._console = io.Console(self, io_log)
         self._reg_gui = gui.RegistersGUI(self.registers)
         self._mem_view = gui.MemoryView(self._memory, self.registers)
         
@@ -100,11 +100,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', dest='instructions', action='store_const', default=False, const=True, help='show processor instructions')
     parser.add_argument('-t', dest='timestamps',   action='store_const', default=False, const=True, help='show timestamps of instructions (requires instructions to be shown)')
-    # parser.add_argument('-m', dest='memory',       action='store_const', default=False, const=True, help='show memory io')
+    parser.add_argument('-o', dest='io',           action='store_const', default=False, const=True, help='show memory io')
     # parser.add_argument('-n', dest='interrupts',   action='store_const', default=False, const=True, help='show interrupts')
     cmdline_args = parser.parse_args()
 
-    mach = Z80SBC()
+    mach = Z80SBC(cmdline_args.io)
 
     def worker():
         t = time()
