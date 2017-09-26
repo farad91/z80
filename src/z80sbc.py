@@ -98,9 +98,9 @@ if __name__ == '__main__':
     
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', dest='instructions', action='store_const', default=False, const=True, help='show processor instructions')
+    parser.add_argument('-I', dest='instructions', action='store_const', default=True, const=False, help='don\'t print processor instructions to console')
     parser.add_argument('-t', dest='timestamps',   action='store_const', default=False, const=True, help='show timestamps of instructions (requires instructions to be shown)')
-    parser.add_argument('-o', dest='io',           action='store_const', default=False, const=True, help='show memory io')
+    parser.add_argument('-O', dest='io',           action='store_const', default=True, const=False, help='don\'t print memory io to console')
     # parser.add_argument('-n', dest='interrupts',   action='store_const', default=False, const=True, help='show interrupts')
     cmdline_args = parser.parse_args()
 
