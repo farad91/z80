@@ -94,6 +94,10 @@ class Console(QTextEdit, IO):
                 self._interruptable.interrupt()
             pass
         
+    def closeEvent(self, event):
+        sys.exit()
+        return
+
     
 class IOMap(object):
     def __init__(self):
